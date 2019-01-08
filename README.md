@@ -23,7 +23,7 @@ This is the most recommended way. Create `package.json` next to your flow file w
   "license": "UNLICENSED",
   "dependencies": {
     "@fbl-plguins/crypto": "0.1.0",
-    "fbl": "1.3.0"
+    "fbl": "1.4.0"
   }
 }
 ```

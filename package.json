@@ -1,6 +1,6 @@
 {
   "name": "@fbl-plugins/crypto",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "FBL file encryption/decryption plugin",
   "main": "dist/index.js",
   "scripts": {
@@ -20,10 +20,10 @@
     "typedi": "0.8.0"
   },
   "peerDependencies": {
-    "fbl": ">=1.3.1 <2.0.0"
+    "fbl": ">=1.4.0 <2.0.0"
   },
   "devDependencies": {
-    "fbl": "1.3.3",
+    "fbl": "1.4.0",
     "@types/chai": "4.1.7",
     "@types/joi": "14.0.1",
     "@types/node": "10.12.18",
