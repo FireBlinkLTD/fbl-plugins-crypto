@@ -1,0 +1,8 @@
+requires:
+  plugins:
+    '@fbl-plugins/crypto': '>=0.0.1'
+
+pipeline:
+  ctx:
+    '$.it':
+      inline: 'works'

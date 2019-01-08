@@ -1,9 +1,9 @@
-import { Service, Inject } from "typedi";
+import { Service, Inject } from 'typedi';
 import {createCipheriv, createDecipheriv, pbkdf2, randomBytes} from 'crypto';
 import {createReadStream, createWriteStream, ReadStream, rename, WriteStream} from 'fs';
 import {promisify} from 'util';
 import {TempPathsRegistry, FSUtil} from 'fbl';
-import { dirname } from "path";
+import { dirname } from 'path';
 
 @Service()
 export class CryptoService {
@@ -80,8 +80,10 @@ export class CryptoService {
         await new Promise<void>(resolve => {
             rs.pipe(cipher).pipe(ws);
             rs.on('close', () => {
-                ws.end();
-                resolve();
+                ws.on('finish', () => {
+                    resolve();               
+                });
+                ws.end();                
             });
         });
 
@@ -128,8 +130,10 @@ export class CryptoService {
         await new Promise<void>(resolve => {
             rs.pipe(decipher).pipe(ws);
             rs.on('close', () => {
+                ws.on('finish', () => {
+                    resolve();               
+                });
                 ws.end();
-                resolve();
             });
         });
 
