@@ -58,5 +58,26 @@
       "dist/test/**/*.js"
     ]
   },
-  "keywords": []
+  "contributors": [
+    {
+      "name": "Vladyslav Tkachenko",
+      "email": "vlad@fireblink.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FireBlinkLTD/fbl-plugins-crypto.git"
+  },
+  "keywords": [
+    "fireblink",
+    "fbl",
+    "plugin",
+    "plugins",
+    "crypto",
+    "crypt",
+    "encrypt",
+    "decrypt",
+    "aes",
+    "pbkdf2"
+  ]
 }
