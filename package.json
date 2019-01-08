@@ -1,6 +1,6 @@
 {
   "name": "@fbl-plugins/crypto",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "FBL file encryption/decryption plugin",
   "main": "dist/index.js",
   "scripts": {
