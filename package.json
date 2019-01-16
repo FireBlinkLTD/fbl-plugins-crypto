@@ -23,7 +23,7 @@
     "fbl": ">=1.4.0 <2.0.0"
   },
   "devDependencies": {
-    "fbl": "1.4.0",
+    "fbl": "1.5.0",
     "@types/chai": "4.1.7",
     "@types/joi": "14.0.1",
     "@types/node": "10.12.18",
