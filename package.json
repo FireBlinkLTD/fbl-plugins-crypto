@@ -35,7 +35,7 @@
     "mochawesome": "3.1.1",
     "nyc": "13.1.0",
     "rimraf": "2.6.3",
-    "source-map-support": "0.5.9",
+    "source-map-support": "0.5.11",
     "tslint": "5.12.0",
     "typescript": "3.2.2",
     "yarn-check": "0.0.3"
