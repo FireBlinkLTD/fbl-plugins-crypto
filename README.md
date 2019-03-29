@@ -22,8 +22,8 @@ This is the most recommended way. Create `package.json` next to your flow file w
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "@fbl-plguins/crypto": "0.1.0",
-    "fbl": "1.4.0"
+    "@fbl-plguins/crypto": "1.1.0",
+    "fbl": "1.7.0"
   }
 }
 ```
@@ -43,8 +43,9 @@ After that you can use `yarn fbl <args>` to execute your flow or even register a
 
 ```yaml
 requires:
+  fbl: '>=1.7.0'
   plugins:
-    '@fbl-plguins/crypto': '>=0.1.0'
+    '@fbl-plguins/crypto': '>=1.1.0'
     
 pipeline:
   # your flow goes here

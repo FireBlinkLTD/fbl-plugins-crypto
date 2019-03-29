@@ -1,30 +1,43 @@
 import {
-    ActionSnapshot, 
-    IActionHandlerMetadata, 
-    IContext, 
+    ActionHandler,
+    ActionSnapshot,
+    IActionHandlerMetadata,
+    IContext,
     IDelegatedParameters,
-    FSUtil
+    FSUtil,
+    ActionProcessor,
 } from 'fbl';
-
-import {BaseCryptoActionHandler} from './BaseCryptoActionHandler';
 import Container from 'typedi';
+
+import { BaseCryptoActionProcessor } from './BaseCryptoActionProcessor';
 import { CryptoService } from '../services';
 
-export class DecryptActionHandler extends BaseCryptoActionHandler {
-    private static metadata = <IActionHandlerMetadata> {
+export class DecryptActionProcessor extends BaseCryptoActionProcessor {
+    /**
+     * @inheritdoc
+     */
+    async execute(): Promise<void> {
+        const source = FSUtil.getAbsolutePath(this.options.file, this.snapshot.wd);
+        const destination = this.options.destination
+            ? FSUtil.getAbsolutePath(this.options.destination, this.snapshot.wd)
+            : source;
+
+        this.snapshot.log(`Decrypting ${source} into ${destination}`);
+        await Container.get(CryptoService).decrypt(source, destination, this.options.password);
+    }
+}
+
+export class DecryptActionHandler extends ActionHandler {
+    private static metadata = <IActionHandlerMetadata>{
         id: 'com.fireblink.fbl.plugins.crypto.decrypt',
-        aliases: [
-            'fbl.plugins.crypto.decrypt',
-            'plugins.crypto.decrypt',
-            'crypto.decrypt',
-            'decrypt'
-        ]
+        aliases: ['fbl.plugins.crypto.decrypt', 'plugins.crypto.decrypt', 'crypto.decrypt', 'decrypt'],
     };
 
     /* istanbul ignore next */
     /**
      * @inheritdoc
-     */    
+     */
+
     getMetadata(): IActionHandlerMetadata {
         return DecryptActionHandler.metadata;
     }
@@ -32,11 +45,12 @@ export class DecryptActionHandler extends BaseCryptoActionHandler {
     /**
      * @inheritdoc
      */
-    async execute(options: any, context: IContext, snapshot: ActionSnapshot, parameters: IDelegatedParameters): Promise<void> {
-        const source = FSUtil.getAbsolutePath(options.file, snapshot.wd);
-        const destination = options.destination ? FSUtil.getAbsolutePath(options.destination, snapshot.wd) : source;
-        
-        snapshot.log(`Decrypting ${source} into ${destination}`);
-        await Container.get(CryptoService).decrypt(source, destination, options.password);        
+    getProcessor(
+        options: any,
+        context: IContext,
+        snapshot: ActionSnapshot,
+        parameters: IDelegatedParameters,
+    ): ActionProcessor {
+        return new DecryptActionProcessor(options, context, snapshot, parameters);
     }
 }

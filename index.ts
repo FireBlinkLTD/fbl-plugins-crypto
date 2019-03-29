@@ -1,31 +1,28 @@
-import {IPlugin} from "fbl";
-import {DecryptActionHandler, EncryptActionHandler} from "./src/handlers";
+import { IPlugin } from 'fbl';
+import { DecryptActionHandler, EncryptActionHandler } from './src/handlers';
 
 const packageJson = require('../package.json');
 
-module.exports = <IPlugin> {
-  name: packageJson.name,
+module.exports = <IPlugin>{
+    name: packageJson.name,
 
-  description: `Plugin human readable description.`,
+    description: `Plugin human readable description.`,
 
-  tags: packageJson.keywords,
+    tags: packageJson.keywords,
 
-  version: packageJson.version,
+    version: packageJson.version,
 
-  requires: {
-    fbl: packageJson.peerDependencies.fbl,
-    plugins: {
-      //pluginId: '<0.0.1'
+    requires: {
+        fbl: packageJson.peerDependencies.fbl,
+        plugins: {
+            // pluginId: '<0.0.1'
+        },
+        applications: [],
     },
-    applications: []
-  },
 
-  reporters: [],
+    reporters: [],
 
-  actionHandlers: [
-    new DecryptActionHandler(),
-    new EncryptActionHandler()
-  ],
+    actionHandlers: [new DecryptActionHandler(), new EncryptActionHandler()],
 
-  templateUtils: []
+    templateUtils: [],
 };

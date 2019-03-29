@@ -1,18 +1,5 @@
-.idea/
-*.iml
+*
 
-.nyc_output/
-coverage/
-mochawesome-report/
-node_modules/
-
-.gitignore
-
-src/
-test/
-tslint.json
-tsconfig.json
-
-index.ts
-
-yarn-error.log
+!dist/index.*
+!dist/src/**/*
+!docs/**/*

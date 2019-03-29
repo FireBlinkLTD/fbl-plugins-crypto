@@ -1,24 +1,37 @@
 import {
-    ActionSnapshot, 
+    ActionHandler,
+    ActionProcessor,
+    ActionSnapshot,
     FSUtil,
-    IActionHandlerMetadata, 
-    IContext, 
-    IDelegatedParameters
+    IActionHandlerMetadata,
+    IContext,
+    IDelegatedParameters,
 } from 'fbl';
 
-import {BaseCryptoActionHandler} from './BaseCryptoActionHandler';
 import Container from 'typedi';
+
+import { BaseCryptoActionProcessor } from './BaseCryptoActionProcessor';
 import { CryptoService } from '../services';
 
-export class EncryptActionHandler extends BaseCryptoActionHandler {
-    private static metadata = <IActionHandlerMetadata> {
+export class EncryptActionProcessor extends BaseCryptoActionProcessor {
+    /**
+     * @inheritdoc
+     */
+    async execute(): Promise<void> {
+        const source = FSUtil.getAbsolutePath(this.options.file, this.snapshot.wd);
+        const destination = this.options.destination
+            ? FSUtil.getAbsolutePath(this.options.destination, this.snapshot.wd)
+            : source;
+
+        this.snapshot.log(`Encrypting ${source} into ${destination}`);
+        await Container.get(CryptoService).encrypt(source, destination, this.options.password);
+    }
+}
+
+export class EncryptActionHandler extends ActionHandler {
+    private static metadata = <IActionHandlerMetadata>{
         id: 'com.fireblink.fbl.plugins.crypto.encrypt',
-        aliases: [
-            'fbl.plugins.crypto.encrypt',
-            'plugins.crypto.encrypt',
-            'crypto.encrypt',
-            'encrypt'
-        ]
+        aliases: ['fbl.plugins.crypto.encrypt', 'plugins.crypto.encrypt', 'crypto.encrypt', 'encrypt'],
     };
 
     /* istanbul ignore next */
@@ -32,11 +45,12 @@ export class EncryptActionHandler extends BaseCryptoActionHandler {
     /**
      * @inheritdoc
      */
-    async execute(options: any, context: IContext, snapshot: ActionSnapshot, parameters: IDelegatedParameters): Promise<void> {
-        const source = FSUtil.getAbsolutePath(options.file, snapshot.wd);
-        const destination = options.destination ? FSUtil.getAbsolutePath(options.destination, snapshot.wd) : source;
-        
-        snapshot.log(`Encrypting ${source} into ${destination}`);
-        await Container.get(CryptoService).encrypt(source, destination, options.password);        
+    getProcessor(
+        options: any,
+        context: IContext,
+        snapshot: ActionSnapshot,
+        parameters: IDelegatedParameters,
+    ): ActionProcessor {
+        return new EncryptActionProcessor(options, context, snapshot, parameters);
     }
 }

@@ -1,23 +1,23 @@
 import { Service, Inject } from 'typedi';
-import {createCipheriv, createDecipheriv, pbkdf2, randomBytes} from 'crypto';
-import {createReadStream, createWriteStream, ReadStream, rename, WriteStream} from 'fs';
-import {promisify} from 'util';
-import {TempPathsRegistry, FSUtil} from 'fbl';
+import { createCipheriv, createDecipheriv, pbkdf2, randomBytes } from 'crypto';
+import { createReadStream, createWriteStream, ReadStream, rename, WriteStream } from 'fs';
+import { promisify } from 'util';
+import { TempPathsRegistry, FSUtil } from 'fbl';
 import { dirname } from 'path';
 
 @Service()
 export class CryptoService {
     private static encryptionAlgorithm = 'aes-256-cbc';
-    
+
     private static hashAlgorithm = 'sha512';
     private static hashIterations = 100000;
     private static keySize = 32;
 
-    private static ivSize = 16;    
-    private static saltSize = 24;    
-    
+    private static ivSize = 16;
+    private static saltSize = 24;
+
     // encryption logic version, reserved for future use
-    private static version = Buffer.alloc(2, '0001', 'hex'); 
+    private static version = Buffer.alloc(2, '0001', 'hex');
 
     @Inject(() => TempPathsRegistry)
     private tempPathsRegistry: TempPathsRegistry;
@@ -25,22 +25,22 @@ export class CryptoService {
     /**
      * Create pbkdf2 hash with 100k iterations with provided password and optionally salt
      * If salt is not provided - it will be generated and returned back
-     * @param password 
-     * @param salt 
+     * @param password
+     * @param salt
      */
-    public async getPasswordHash(password: string, salt?: Buffer): Promise<{hash: Buffer, salt: Buffer}> {
+    public async getPasswordHash(password: string, salt?: Buffer): Promise<{ hash: Buffer; salt: Buffer }> {
         salt = salt || randomBytes(CryptoService.saltSize);
         const hash = await promisify(pbkdf2)(
-            password, 
-            salt, 
-            CryptoService.hashIterations, 
-            CryptoService.keySize, 
-            CryptoService.hashAlgorithm
+            password,
+            salt,
+            CryptoService.hashIterations,
+            CryptoService.keySize,
+            CryptoService.hashAlgorithm,
         );
 
         return {
             salt: salt,
-            hash: hash
+            hash: hash,
         };
     }
 
@@ -48,7 +48,7 @@ export class CryptoService {
      * Encrypt file with provided password
      * @param source
      * @param destination
-     * @param password 
+     * @param password
      */
     async encrypt(source: string, destination: string, password: string): Promise<void> {
         const passwordHash = await this.getPasswordHash(password);
@@ -64,7 +64,7 @@ export class CryptoService {
             await FSUtil.mkdirp(dirname(destination));
             ws = createWriteStream(destination);
         }
-        
+
         const rs = createReadStream(source);
 
         const writeAsync = (chunk: Buffer): Promise<void> => {
@@ -81,9 +81,9 @@ export class CryptoService {
             rs.pipe(cipher).pipe(ws);
             rs.on('close', () => {
                 ws.on('finish', () => {
-                    resolve();               
+                    resolve();
                 });
-                ws.end();                
+                ws.end();
             });
         });
 
@@ -94,15 +94,15 @@ export class CryptoService {
 
     /**
      * Decrypt file
-     * @param source 
+     * @param source
      * @param destination
-     * @param password 
+     * @param password
      */
     async decrypt(source: string, destination: string, password: string): Promise<void> {
         const headerSize = 2 + CryptoService.saltSize + CryptoService.ivSize;
 
         let rs = createReadStream(source, {
-            end: headerSize
+            end: headerSize,
         });
 
         const header = await this.streamToBuffer(rs);
@@ -111,7 +111,7 @@ export class CryptoService {
         const iv = header.slice(2 + CryptoService.saltSize, headerSize);
 
         rs = createReadStream(source, {
-            start: headerSize
+            start: headerSize,
         });
 
         const passwordHash = await this.getPasswordHash(password, salt);
@@ -121,17 +121,17 @@ export class CryptoService {
         let tmpFile: string;
         if (source === destination) {
             tmpFile = await this.tempPathsRegistry.createTempFile(true);
-            ws = createWriteStream(tmpFile);    
+            ws = createWriteStream(tmpFile);
         } else {
             await FSUtil.mkdirp(dirname(destination));
             ws = createWriteStream(destination);
         }
-        
+
         await new Promise<void>(resolve => {
             rs.pipe(decipher).pipe(ws);
             rs.on('close', () => {
                 ws.on('finish', () => {
-                    resolve();               
+                    resolve();
                 });
                 ws.end();
             });
@@ -144,13 +144,13 @@ export class CryptoService {
 
     /**
      * Read stream into buffer
-     * @param stream 
+     * @param stream
      */
     private streamToBuffer(stream: ReadStream): Promise<Buffer> {
         return new Promise((resolve, reject) => {
             const buffers: Buffer[] = [];
             stream.on('error', reject);
-            stream.on('data', (data) => buffers.push(data));
+            stream.on('data', data => buffers.push(data));
             stream.on('end', () => resolve(Buffer.concat(buffers)));
         });
     }

@@ -1,10 +1,10 @@
-import {suite, test} from 'mocha-typescript';
-import {ActionSnapshot, ContextUtil, TempPathsRegistry} from 'fbl';
-import {promisify} from 'util';
-import {readFile, writeFile} from 'fs';
-import {join} from 'path';
+import { suite, test } from 'mocha-typescript';
+import { ActionSnapshot, ContextUtil, TempPathsRegistry } from 'fbl';
+import { promisify } from 'util';
+import { readFile, writeFile } from 'fs';
+import { join } from 'path';
 import * as assert from 'assert';
-import {Container} from 'typedi';
+import { Container } from 'typedi';
 import { EncryptActionHandler, DecryptActionHandler } from '../../../src/handlers';
 
 const chai = require('chai');
@@ -24,28 +24,27 @@ class CryptoTestSuite {
         const context = ContextUtil.generateEmptyContext();
         const snapshot = new ActionSnapshot('.', {}, '', 0, {});
 
-        await chai.expect(
-            actionHandler.validate([], context, snapshot, {})
-        ).to.be.rejected;
+        await chai.expect(actionHandler.getProcessor([], context, snapshot, {}).validate()).to.be.rejected;
+
+        await chai.expect(actionHandler.getProcessor({}, context, snapshot, {}).validate()).to.be.rejected;
+
+        await chai.expect(actionHandler.getProcessor(123, context, snapshot, {}).validate()).to.be.rejected;
+
+        await chai.expect(actionHandler.getProcessor('test', context, snapshot, {}).validate()).to.be.rejected;
 
         await chai.expect(
-            actionHandler.validate({}, context, snapshot, {})
+            actionHandler
+                .getProcessor(
+                    {
+                        password: false,
+                        file: ['/tmp'],
+                    },
+                    context,
+                    snapshot,
+                    {},
+                )
+                .validate(),
         ).to.be.rejected;
-
-        await chai.expect(
-            actionHandler.validate(123, context, snapshot, {})
-        ).to.be.rejected;
-
-        await chai.expect(
-            actionHandler.validate('test', context, snapshot, {})
-        ).to.be.rejected;
-
-        await chai.expect(
-            actionHandler.validate({
-                password: false,
-                file: ['/tmp']
-            }, context, snapshot, {})
-        ).to.be.rejected;        
     }
 
     @test()
@@ -54,16 +53,30 @@ class CryptoTestSuite {
         const context = ContextUtil.generateEmptyContext();
         const snapshot = new ActionSnapshot('.', {}, '', 0, {});
 
-        await actionHandler.validate({
-            password: 'secret',
-            file: '/tmp',            
-        }, context, snapshot, {});
+        await actionHandler
+            .getProcessor(
+                {
+                    password: 'secret',
+                    file: '/tmp',
+                },
+                context,
+                snapshot,
+                {},
+            )
+            .validate();
 
-        await actionHandler.validate({
-            password: 'secret',
-            file: '/tmp',
-            destination: '/tmp'
-        }, context, snapshot, {});
+        await actionHandler
+            .getProcessor(
+                {
+                    password: 'secret',
+                    file: '/tmp',
+                    destination: '/tmp',
+                },
+                context,
+                snapshot,
+                {},
+            )
+            .validate();
     }
 
     @test()
@@ -75,7 +88,7 @@ class CryptoTestSuite {
 
         const tmpDir = await tempPathsRegistry.createTempDir();
         const writeFileAsync = promisify(writeFile);
-        const readFileAsync = promisify(readFile);        
+        const readFileAsync = promisify(readFile);
 
         const context = ContextUtil.generateEmptyContext();
         const snapshot = new ActionSnapshot('.', {}, tmpDir, 0, {});
@@ -83,25 +96,39 @@ class CryptoTestSuite {
         const src = await Container.get(TempPathsRegistry).createTempFile();
 
         const fileContent = 'test@'.repeat(100);
-        await writeFileAsync(src, fileContent, 'utf8');        
+        await writeFileAsync(src, fileContent, 'utf8');
 
         const password = 'super_secret_password';
 
-        await encryptActionHandler.execute({
-            password: password,
-            file: src
-        }, context, snapshot, {});
+        await encryptActionHandler
+            .getProcessor(
+                {
+                    password: password,
+                    file: src,
+                },
+                context,
+                snapshot,
+                {},
+            )
+            .execute();
 
         let content = await readFileAsync(src, 'utf8');
         assert.notStrictEqual(content, fileContent);
 
-        await decryptActionHandler.execute({
-            password: password,
-            file: src            
-        }, context, snapshot, {});
-        
+        await decryptActionHandler
+            .getProcessor(
+                {
+                    password: password,
+                    file: src,
+                },
+                context,
+                snapshot,
+                {},
+            )
+            .execute();
+
         content = await readFileAsync(src, 'utf8');
-        assert.strictEqual(content, fileContent);        
+        assert.strictEqual(content, fileContent);
     }
 
     @test()
@@ -113,7 +140,7 @@ class CryptoTestSuite {
 
         const tmpDir = await tempPathsRegistry.createTempDir();
         const writeFileAsync = promisify(writeFile);
-        const readFileAsync = promisify(readFile);        
+        const readFileAsync = promisify(readFile);
 
         const context = ContextUtil.generateEmptyContext();
         const snapshot = new ActionSnapshot('.', {}, tmpDir, 0, {});
@@ -123,26 +150,40 @@ class CryptoTestSuite {
         const dst2 = await Container.get(TempPathsRegistry).createTempFile();
 
         const fileContent = 'test@'.repeat(100);
-        await writeFileAsync(src, fileContent, 'utf8');        
+        await writeFileAsync(src, fileContent, 'utf8');
 
         const password = 'super_secret_password';
 
-        await encryptActionHandler.execute({
-            password: password,
-            file: src,
-            destination: dst1
-        }, context, snapshot, {});
+        await encryptActionHandler
+            .getProcessor(
+                {
+                    password: password,
+                    file: src,
+                    destination: dst1,
+                },
+                context,
+                snapshot,
+                {},
+            )
+            .execute();
 
         let content = await readFileAsync(dst1, 'utf8');
         assert.notStrictEqual(content, fileContent);
-        
-        await decryptActionHandler.execute({
-            password: password,
-            file: dst1,
-            destination: dst2            
-        }, context, snapshot, {});
-        
+
+        await decryptActionHandler
+            .getProcessor(
+                {
+                    password: password,
+                    file: dst1,
+                    destination: dst2,
+                },
+                context,
+                snapshot,
+                {},
+            )
+            .execute();
+
         content = await readFileAsync(dst2, 'utf8');
-        assert.strictEqual(content, fileContent);        
+        assert.strictEqual(content, fileContent);
     }
 }

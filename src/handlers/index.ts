@@ -1,3 +1,3 @@
-export * from './BaseCryptoActionHandler';
+export * from './BaseCryptoActionProcessor';
 export * from './DecryptActionHandler';
 export * from './EncryptActionHandler';
