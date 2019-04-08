@@ -46,7 +46,7 @@
     "prettier": "1.16.4",
     "nyc": "13.3.0",
     "rimraf": "2.6.3",
-    "source-map-support": "0.5.11",
+    "source-map-support": "0.5.12",
     "tslint": "5.14.0",
     "tslint-config-prettier": "1.18.0",
     "typescript": "3.3.4000",
