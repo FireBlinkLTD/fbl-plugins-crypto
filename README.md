@@ -4,6 +4,7 @@ Encrypt/decrypt files with ease in your [fbl](https://fbl.fireblink.com) flows.
 
 [![CircleCI](https://circleci.com/gh/FireBlinkLTD/fbl-plugins-crypto.svg?style=svg)](https://circleci.com/gh/FireBlinkLTD/fbl-plugins-crypto) [![Greenkeeper badge](https://badges.greenkeeper.io/FireBlinkLTD/fbl-plugins-crypto.svg)](https://greenkeeper.io/)
 [![codecov](https://codecov.io/gh/FireBlinkLTD/fbl-plugins-crypto/branch/master/graph/badge.svg)](https://codecov.io/gh/FireBlinkLTD/fbl-plugins-crypto)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/FireBlinkLTD/fbl-plugins-crypto.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FireBlinkLTD/fbl-plugins-crypto/alerts/)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/FireBlinkLTD/fbl-plugins-crypto.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FireBlinkLTD/fbl-plugins-crypto/context:javascript)
 
 ## Integration
