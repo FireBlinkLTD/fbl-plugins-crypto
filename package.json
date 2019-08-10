@@ -23,7 +23,7 @@
     "typedi": "0.8.0"
   },
   "peerDependencies": {
-    "fbl": ">=1.7.0 <2.0.0"
+    "fbl": ">=1.9.0 <2.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "8.1.0",
