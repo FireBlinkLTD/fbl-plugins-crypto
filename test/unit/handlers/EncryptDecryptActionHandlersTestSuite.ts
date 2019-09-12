@@ -22,7 +22,7 @@ class CryptoTestSuite {
     async failValidation(): Promise<void> {
         const actionHandler = new EncryptActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         await chai.expect(actionHandler.getProcessor([], context, snapshot, {}).validate()).to.be.rejected;
 
@@ -51,7 +51,7 @@ class CryptoTestSuite {
     async passValidation(): Promise<void> {
         const actionHandler = new EncryptActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         await actionHandler
             .getProcessor(
@@ -91,7 +91,7 @@ class CryptoTestSuite {
         const readFileAsync = promisify(readFile);
 
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, tmpDir, 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, tmpDir, 0, {});
 
         const src = await Container.get(TempPathsRegistry).createTempFile();
 
@@ -143,7 +143,7 @@ class CryptoTestSuite {
         const readFileAsync = promisify(readFile);
 
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, tmpDir, 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, tmpDir, 0, {});
 
         const src = await Container.get(TempPathsRegistry).createTempFile();
         const dst1 = await Container.get(TempPathsRegistry).createTempFile();
