@@ -1,5 +1,6 @@
 import { IPlugin } from 'fbl';
 import { DecryptActionHandler, EncryptActionHandler } from './src/handlers';
+import { PasswordGeneratorTemplateUtility } from './src/templateUtilities';
 
 const packageJson = require('../package.json');
 
@@ -24,5 +25,5 @@ module.exports = <IPlugin>{
 
     actionHandlers: [new DecryptActionHandler(), new EncryptActionHandler()],
 
-    templateUtils: [],
+    templateUtils: [new PasswordGeneratorTemplateUtility()],
 };

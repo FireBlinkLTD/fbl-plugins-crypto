@@ -58,3 +58,7 @@ pipeline:
 
 - [encrypt](docs/encrypt.md)
 - [decrypt](docs/decrypt.md)
+
+## Template Utilities
+
+- [password generator](docs/templateUtilities.md)

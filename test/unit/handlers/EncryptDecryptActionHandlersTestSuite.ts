@@ -2,7 +2,6 @@ import { suite, test } from 'mocha-typescript';
 import { ActionSnapshot, ContextUtil, TempPathsRegistry } from 'fbl';
 import { promisify } from 'util';
 import { readFile, writeFile } from 'fs';
-import { join } from 'path';
 import * as assert from 'assert';
 import { Container } from 'typedi';
 import { EncryptActionHandler, DecryptActionHandler } from '../../../src/handlers';
