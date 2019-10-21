@@ -14,7 +14,7 @@ export class PasswordGeneratorTemplateUtility implements ITemplateUtility {
     ): { [key: string]: any } {
         return {
             password: {
-                generate: async (words = 4, delimiter?: string): Promise<string> => {
+                generate: (words = 4, delimiter?: string): string => {
                     const passWords: string[] = niceware.generatePassphrase(words * 2);
 
                     return passWords.join(delimiter || '-');

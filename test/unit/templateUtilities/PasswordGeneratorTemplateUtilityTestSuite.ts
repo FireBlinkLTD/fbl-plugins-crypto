@@ -18,13 +18,13 @@ class PasswordGeneratorTemplateUtilityTestSuite {
             '.',
         ).password.generate;
 
-        let password = await generatePassword();
+        let password = generatePassword();
         assert(password.split('-').length, 4);
 
-        password = await generatePassword(2);
+        password = generatePassword(2);
         assert(password.split('-').length, 2);
 
-        password = await generatePassword(3, '@');
+        password = generatePassword(3, '@');
         assert(password.split('@').length, 3);
     }
 }
