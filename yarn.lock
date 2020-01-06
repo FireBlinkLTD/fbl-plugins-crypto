@@ -3822,10 +3822,10 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-niceware@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/niceware/-/niceware-1.0.7.tgz#958257a1e4bdebb1a50b434522b7ac3572548d9b"
-  integrity sha512-tAHyqgolPIo3UO7bv8kPjY3hwPM5Lzj7OT6KJ/d/ErxWun8Vkqi0bgG+oTymf+JyWTi4TRP84o1p1Me5rA650Q==
+niceware@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/niceware/-/niceware-2.0.0.tgz#071441e59cc1acc028b282e403347eb26ebb2a68"
+  integrity sha512-BqxFABePNqGTJ/dk8W2C/qWixKuu5/xWYY0yPLCCgdIu6CYKXBh0NoUaYO+344WQTB9rffMMUEgcYl5KNCwuSw==
   dependencies:
     binary-search "^1.3.3"
     randombytes "^2.0.6"
