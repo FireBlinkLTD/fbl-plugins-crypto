@@ -1,6 +1,6 @@
 requires:
   plugins:
-    '@fbl-plugins/crypto': '>=0.0.1'
+    '@fbl-plugins/crypto': '>=1.3.0-beta.0'
 
 pipeline:
   ctx:
