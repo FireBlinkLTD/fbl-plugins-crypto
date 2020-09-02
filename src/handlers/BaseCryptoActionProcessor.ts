@@ -4,9 +4,7 @@ import * as Joi from 'joi';
 export abstract class BaseCryptoActionProcessor extends ActionProcessor {
     private static validationSchema = Joi.object({
         password: Joi.string().required(),
-        file: Joi.string()
-            .min(1)
-            .required(),
+        file: Joi.string().min(1).required(),
         destination: Joi.string().min(1),
     })
         .required()
@@ -15,7 +13,7 @@ export abstract class BaseCryptoActionProcessor extends ActionProcessor {
     /**
      * @inheritdoc
      */
-    getValidationSchema(): Joi.SchemaLike | null {
+    getValidationSchema(): Joi.Schema | null {
         return BaseCryptoActionProcessor.validationSchema;
     }
 }

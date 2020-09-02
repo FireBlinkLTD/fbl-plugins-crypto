@@ -1,7 +1,7 @@
 import { suite, test } from 'mocha-typescript';
 import { ActionSnapshot, ContextUtil } from 'fbl';
 import { PasswordGeneratorTemplateUtility } from '../../../src/templateUtilities';
-import { assert } from 'joi';
+import { strictEqual } from 'assert';
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
@@ -19,12 +19,12 @@ class PasswordGeneratorTemplateUtilityTestSuite {
         ).password.generate;
 
         let password = generatePassword();
-        assert(password.split('-').length, 4);
+        strictEqual(password.split('-').length, 4);
 
         password = generatePassword(2);
-        assert(password.split('-').length, 2);
+        strictEqual(password.split('-').length, 2);
 
         password = generatePassword(3, '@');
-        assert(password.split('@').length, 3);
+        strictEqual(password.split('@').length, 3);
     }
 }

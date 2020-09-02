@@ -68,7 +68,7 @@ export class CryptoService {
         const rs = createReadStream(source);
 
         const writeAsync = (chunk: Buffer): Promise<void> => {
-            return new Promise<void>(resolve => {
+            return new Promise<void>((resolve) => {
                 ws.write(chunk, () => resolve());
             });
         };
@@ -77,7 +77,7 @@ export class CryptoService {
         await writeAsync(passwordHash.salt);
         await writeAsync(iv);
 
-        await new Promise<void>(resolve => {
+        await new Promise<void>((resolve) => {
             rs.pipe(cipher).pipe(ws);
             rs.on('close', () => {
                 ws.on('finish', () => {
@@ -127,7 +127,7 @@ export class CryptoService {
             ws = createWriteStream(destination);
         }
 
-        await new Promise<void>(resolve => {
+        await new Promise<void>((resolve) => {
             rs.pipe(decipher).pipe(ws);
             rs.on('close', () => {
                 ws.on('finish', () => {
@@ -150,7 +150,7 @@ export class CryptoService {
         return new Promise((resolve, reject) => {
             const buffers: Buffer[] = [];
             stream.on('error', reject);
-            stream.on('data', data => buffers.push(data));
+            stream.on('data', (data: Buffer) => buffers.push(data));
             stream.on('end', () => resolve(Buffer.concat(buffers)));
         });
     }
