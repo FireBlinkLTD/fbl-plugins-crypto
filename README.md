@@ -2,7 +2,7 @@
 
 Encrypt/decrypt files with ease in your [fbl](https://fbl.fireblink.com) flows.
 
-[![CircleCI](https://circleci.com/gh/FireBlinkLTD/fbl-plugins-crypto.svg?style=svg)](https://circleci.com/gh/FireBlinkLTD/fbl-plugins-crypto) 
+[![Tests](https://github.com/FireBlinkLTD/fbl-plugins-crypto/workflows/Tests/badge.svg)](https://github.com/FireBlinkLTD/fbl-plugins-crypto/actions?query=workflow%3ATests)
 [![Known Vulnerabilities](https://snyk.io/test/github/FireBlinkLTD/fbl-plugins-crypto/badge.svg)](https://snyk.io/test/github/FireBlinkLTD/fbl-plugins-crypto)
 [![codecov](https://codecov.io/gh/FireBlinkLTD/fbl-plugins-crypto/branch/master/graph/badge.svg)](https://codecov.io/gh/FireBlinkLTD/fbl-plugins-crypto)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/FireBlinkLTD/fbl-plugins-crypto.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FireBlinkLTD/fbl-plugins-crypto/alerts/)

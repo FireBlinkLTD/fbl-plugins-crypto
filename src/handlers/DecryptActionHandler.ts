@@ -7,7 +7,6 @@ import {
     FSUtil,
     ActionProcessor,
 } from 'fbl';
-import Container from 'typedi';
 
 import { BaseCryptoActionProcessor } from './BaseCryptoActionProcessor';
 import { CryptoService } from '../services';
@@ -23,7 +22,7 @@ export class DecryptActionProcessor extends BaseCryptoActionProcessor {
             : source;
 
         this.snapshot.log(`Decrypting ${source} into ${destination}`);
-        await Container.get(CryptoService).decrypt(source, destination, this.options.password);
+        await CryptoService.instance.decrypt(source, destination, this.options.password);
     }
 }
 

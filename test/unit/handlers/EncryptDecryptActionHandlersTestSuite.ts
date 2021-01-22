@@ -3,7 +3,6 @@ import { ActionSnapshot, ContextUtil, TempPathsRegistry } from 'fbl';
 import { promisify } from 'util';
 import { readFile, writeFile } from 'fs';
 import * as assert from 'assert';
-import { Container } from 'typedi';
 import { EncryptActionHandler, DecryptActionHandler } from '../../../src/handlers';
 
 const chai = require('chai');
@@ -13,8 +12,7 @@ chai.use(chaiAsPromised);
 @suite()
 class CryptoTestSuite {
     async after(): Promise<void> {
-        await Container.get(TempPathsRegistry).cleanup();
-        Container.reset();
+        await TempPathsRegistry.instance.cleanup();
     }
 
     @test()
@@ -80,19 +78,17 @@ class CryptoTestSuite {
 
     @test()
     async encryptDecryptSameFile(): Promise<void> {
-        const tempPathsRegistry = Container.get(TempPathsRegistry);
-
         const encryptActionHandler = new EncryptActionHandler();
         const decryptActionHandler = new DecryptActionHandler();
 
-        const tmpDir = await tempPathsRegistry.createTempDir();
+        const tmpDir = await TempPathsRegistry.instance.createTempDir();
         const writeFileAsync = promisify(writeFile);
         const readFileAsync = promisify(readFile);
 
         const context = ContextUtil.generateEmptyContext();
         const snapshot = new ActionSnapshot('index.yml', '.', {}, tmpDir, 0, {});
 
-        const src = await Container.get(TempPathsRegistry).createTempFile();
+        const src = await TempPathsRegistry.instance.createTempFile();
 
         const fileContent = 'test@'.repeat(100);
         await writeFileAsync(src, fileContent, 'utf8');
@@ -132,21 +128,19 @@ class CryptoTestSuite {
 
     @test()
     async encryptDecryptDifferentFile(): Promise<void> {
-        const tempPathsRegistry = Container.get(TempPathsRegistry);
-
         const encryptActionHandler = new EncryptActionHandler();
         const decryptActionHandler = new DecryptActionHandler();
 
-        const tmpDir = await tempPathsRegistry.createTempDir();
+        const tmpDir = await TempPathsRegistry.instance.createTempDir();
         const writeFileAsync = promisify(writeFile);
         const readFileAsync = promisify(readFile);
 
         const context = ContextUtil.generateEmptyContext();
         const snapshot = new ActionSnapshot('index.yml', '.', {}, tmpDir, 0, {});
 
-        const src = await Container.get(TempPathsRegistry).createTempFile();
-        const dst1 = await Container.get(TempPathsRegistry).createTempFile();
-        const dst2 = await Container.get(TempPathsRegistry).createTempFile();
+        const src = await TempPathsRegistry.instance.createTempFile();
+        const dst1 = await TempPathsRegistry.instance.createTempFile();
+        const dst2 = await TempPathsRegistry.instance.createTempFile();
 
         const fileContent = 'test@'.repeat(100);
         await writeFileAsync(src, fileContent, 'utf8');

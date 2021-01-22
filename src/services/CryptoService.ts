@@ -1,11 +1,9 @@
-import { Service, Inject } from 'typedi';
 import { createCipheriv, createDecipheriv, pbkdf2, randomBytes } from 'crypto';
 import { createReadStream, createWriteStream, ReadStream, rename, WriteStream } from 'fs';
 import { promisify } from 'util';
 import { TempPathsRegistry, FSUtil } from 'fbl';
 import { dirname } from 'path';
 
-@Service()
 export class CryptoService {
     private static encryptionAlgorithm = 'aes-256-cbc';
 
@@ -19,8 +17,21 @@ export class CryptoService {
     // encryption logic version, reserved for future use
     private static version = Buffer.alloc(2, '0001', 'hex');
 
-    @Inject(() => TempPathsRegistry)
-    private tempPathsRegistry: TempPathsRegistry;
+    private constructor() {}
+
+    private static pInstance: CryptoService;
+    public static get instance(): CryptoService {
+        if (!this.pInstance) {
+            this.pInstance = new CryptoService();
+        }
+
+        return this.pInstance;
+    }
+
+    /* istanbul ignore next */
+    public static reset() {
+        this.pInstance = null;
+    }
 
     /**
      * Create pbkdf2 hash with 100k iterations with provided password and optionally salt
@@ -58,7 +69,7 @@ export class CryptoService {
         let tmpFile: string;
         let ws: WriteStream;
         if (source === destination) {
-            tmpFile = await this.tempPathsRegistry.createTempFile(true);
+            tmpFile = await TempPathsRegistry.instance.createTempFile(true);
             ws = createWriteStream(tmpFile);
         } else {
             await FSUtil.mkdirp(dirname(destination));
@@ -120,7 +131,7 @@ export class CryptoService {
         let ws: WriteStream;
         let tmpFile: string;
         if (source === destination) {
-            tmpFile = await this.tempPathsRegistry.createTempFile(true);
+            tmpFile = await TempPathsRegistry.instance.createTempFile(true);
             ws = createWriteStream(tmpFile);
         } else {
             await FSUtil.mkdirp(dirname(destination));

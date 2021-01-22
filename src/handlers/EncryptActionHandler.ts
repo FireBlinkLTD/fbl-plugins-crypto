@@ -8,8 +8,6 @@ import {
     IDelegatedParameters,
 } from 'fbl';
 
-import Container from 'typedi';
-
 import { BaseCryptoActionProcessor } from './BaseCryptoActionProcessor';
 import { CryptoService } from '../services';
 
@@ -24,7 +22,7 @@ export class EncryptActionProcessor extends BaseCryptoActionProcessor {
             : source;
 
         this.snapshot.log(`Encrypting ${source} into ${destination}`);
-        await Container.get(CryptoService).encrypt(source, destination, this.options.password);
+        await CryptoService.instance.encrypt(source, destination, this.options.password);
     }
 }
 
