@@ -18,7 +18,7 @@
   "author": "FireBlink LTD",
   "license": "MIT",
   "dependencies": {
-    "joi": "17.4.0",
+    "joi": "17.7.1",
     "niceware": "2.0.2"
   },
   "peerDependencies": {
